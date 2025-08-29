@@ -1,0 +1,1408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crisis De-escalation - CARING COMPASSION</title>
+    <meta name="description" content="Emergency patient de-escalation protocols for healthcare providers">
+    <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;Crisis De-escalation&quot;,&quot;short_name&quot;:&quot;Crisis&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;theme_color&quot;:&quot;#ff6b6b&quot;}">
+    <meta name="theme-color" content="#ff6b6b">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            touch-action: manipulation;
+        }
+
+        .welcome-screen {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .welcome-screen.hidden {
+            display: none;
+        }
+
+        .training-logo {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .training-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .training-subtitle {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .tool-name {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .emergency-warning {
+            background: #fff3cd;
+            border: 2px solid #ffc107;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .warning-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .warning-text {
+            font-size: 0.9rem;
+            color: #856404;
+            line-height: 1.4;
+        }
+
+        .quick-instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .instruction-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instruction-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instruction-list li {
+            padding: 8px 0;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .start-btn:active {
+            transform: scale(0.98);
+        }
+
+        .bookmark-hint {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #0c5460;
+        }
+
+        /* Main app styles */
+        .app-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 450px;
+            margin: 0 auto;
+            overflow: hidden;
+            display: none;
+        }
+
+        .app-container.active {
+            display: block;
+        }
+
+        .emergency-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .emergency-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            animation: pulse 2s infinite;
+        }
+
+        .emergency-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .emergency-subtitle {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .silent-mode-toggle {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .silent-mode-active {
+            background: rgba(255, 255, 255, 0.9) !important;
+            color: #495057 !important;
+        }
+
+        .crisis-level-indicator {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+            background: #f8f9fa;
+            gap: 10px;
+        }
+
+        .level-btn {
+            flex: 1;
+            padding: 15px 8px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 0.9rem;
+            font-weight: 600;
+            min-height: 80px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .level-btn.active {
+            transform: scale(1.05);
+        }
+
+        .level-1 { border-color: #28a745; }
+        .level-1.active { background: #28a745; border-color: #28a745; color: white; }
+
+        .level-2 { border-color: #ffc107; }
+        .level-2.active { background: #ffc107; border-color: #ffc107; color: #212529; }
+
+        .level-3 { border-color: #dc3545; }
+        .level-3.active { background: #dc3545; border-color: #dc3545; color: white; }
+
+        .protocol-container {
+            padding: 20px;
+            min-height: 450px;
+        }
+
+        .step-counter {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e9ecef;
+            border-radius: 3px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+            transition: width 0.3s ease;
+            border-radius: 3px;
+        }
+
+        .current-step {
+            background: white;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            border-left: 5px solid #ff6b6b;
+            position: relative;
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .step-number {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            background: #ff6b6b;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .step-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 12px;
+            padding-left: 10px;
+        }
+
+        .step-content {
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #495057;
+            margin-bottom: 12px;
+        }
+
+        .step-action {
+            background: #e3f2fd;
+            padding: 12px;
+            border-radius: 10px;
+            border-left: 4px solid #2196f3;
+            margin-top: 12px;
+        }
+
+        .action-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        .breathing-exercise {
+            background: #f0f8ff;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .breathing-circle {
+            width: 100px;
+            height: 100px;
+            border: 4px solid #ff6b6b;
+            border-radius: 50%;
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #ff6b6b;
+            transition: transform 4s ease-in-out;
+        }
+
+        .breathing-circle.inhale {
+            transform: scale(1.3);
+            background: rgba(255, 107, 107, 0.1);
+        }
+
+        .breathing-circle.exhale {
+            transform: scale(1);
+            background: transparent;
+        }
+
+        .breathing-instructions {
+            font-size: 0.9rem;
+            color: #495057;
+            margin-top: 10px;
+        }
+
+        .control-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+        }
+
+        .btn-previous {
+            background: #e9ecef;
+            color: #495057;
+        }
+
+        .btn-next {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-complete {
+            background: #28a745;
+            color: white;
+        }
+
+        .control-btn:active {
+            transform: scale(0.98);
+        }
+
+        .control-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .emergency-contacts {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+
+        .contacts-title {
+            font-weight: bold;
+            color: #856404;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+        }
+
+        .contact-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 6px 0;
+            border-bottom: 1px solid rgba(133, 100, 4, 0.2);
+            font-size: 0.8rem;
+        }
+
+        .contact-item:last-child {
+            border-bottom: none;
+        }
+
+        .call-btn {
+            background: #28a745;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+
+        .call-btn:active {
+            transform: scale(0.95);
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .success-icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .offline-indicator {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            z-index: 1000;
+        }
+
+        .offline-indicator.offline {
+            background: #dc3545;
+        }
+
+        @media (max-width: 480px) {
+            .welcome-screen, .app-container {
+                margin: 5px;
+                border-radius: 15px;
+            }
+            
+            .protocol-container {
+                padding: 15px;
+                min-height: 400px;
+            }
+            
+            .crisis-level-indicator {
+                padding: 15px;
+                gap: 8px;
+            }
+            
+            .level-btn {
+                padding: 12px 6px;
+                font-size: 0.8rem;
+                min-height: 70px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="training-logo"></div>
+        <div class="training-title">CARING COMPASSION</div>
+        <div class="training-subtitle">Trauma-Informed Care Training<br>Southern Philippines Medical Center</div>
+        
+        <div class="tool-name">
+            Emergency De-escalation Guide
+        </div>
+        
+        <div class="emergency-warning">
+            <div class="warning-title">
+                Crisis-Ready Tool
+            </div>
+            <div class="warning-text">
+                Step-by-step protocols for patient de-escalation. Use during active crisis situations or for training preparation.
+            </div>
+        </div>
+        
+        <div class="quick-instructions">
+            <div class="instruction-title">
+                How to Use:
+            </div>
+            <ul class="instruction-list">
+                <li>Select crisis level (Mild, Moderate, Severe)</li>
+                <li>Follow step-by-step protocols</li>
+                <li>Built-in breathing exercises for regulation</li>
+                <li>One-tap emergency contacts</li>
+                <li>Silent mode for discrete use</li>
+            </ul>
+        </div>
+        
+        <button class="start-btn" onclick="startApp()">
+            Open Crisis Guide
+        </button>
+        
+        <div class="bookmark-hint">
+            <strong>Emergency Ready:</strong> Works offline and prevents accidental exits during crisis protocols.
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <div class="emergency-header">
+            <button class="back-btn" onclick="showWelcome()">←</button>
+            <button class="silent-mode-toggle" onclick="toggleSilentMode()" title="Silent Mode" id="silentToggle">
+                Audio
+            </button>
+            <div class="emergency-icon">Alert</div>
+            <div class="emergency-title">Crisis De-escalation</div>
+            <div class="emergency-subtitle">Patient Stabilization Protocol</div>
+        </div>
+
+        <div class="crisis-level-indicator">
+            <button class="level-btn level-1" onclick="setLevel(1)" data-level="1">
+                <div style="font-size: 1.5rem;">Calm</div>
+                <div>Mild</div>
+                <div style="font-size: 0.7rem;">Anxious</div>
+            </button>
+            <button class="level-btn level-2" onclick="setLevel(2)" data-level="2">
+                <div style="font-size: 1.5rem;">Upset</div>
+                <div>Moderate</div>
+                <div style="font-size: 0.7rem;">Agitated</div>
+            </button>
+            <button class="level-btn level-3 active" onclick="setLevel(3)" data-level="3">
+                <div style="font-size: 1.5rem;">Crisis</div>
+                <div>Severe</div>
+                <div style="font-size: 0.7rem;">Hostile</div>
+            </button>
+        </div>
+
+        <div class="protocol-container">
+            <div class="step-counter">
+                Step <span id="currentStepNum">1</span> of <span id="totalSteps">6</span>
+            </div>
+
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+
+            <div class="current-step" id="currentStep">
+                <!-- Step content will be loaded here -->
+            </div>
+
+            <div class="control-buttons">
+                <button class="control-btn btn-previous" onclick="previousStep()" id="prevBtn">
+                    ← Previous
+                </button>
+                <button class="control-btn btn-next" onclick="nextStep()" id="nextBtn">
+                    Next →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">Online</div>
+
+    <script>
+        const protocols = {
+            1: { // Mild - Anxious
+                name: "Mild Anxiety Protocol",
+                steps: [
+                    {
+                        title: "Center Yourself",
+                        content: "Before addressing anxiety, regulate your own nervous system. Take three deep breaths.",
+                        action: "Take 30 seconds to breathe and ground your presence.",
+                        icon: "Center"
+                    },
+                    {
+                        title: "Acknowledge & Validate",
+                        content: "Recognize anxiety without minimizing. Use: 'I can see you're worried' or 'Your concerns make sense.'",
+                        action: "Validate their emotional experience before medical needs.",
+                        icon: "Listen"
+                    },
+                    {
+                        title: "Provide Information",
+                        content: "Anxiety stems from unknown. Explain procedures, expectations, and answer questions clearly.",
+                        action: "Give step-by-step information about next steps.",
+                        icon: "Inform"
+                    },
+                    {
+                        title: "Offer Choices",
+                        content: "Restore control with options: position preferences, timing, or support person presence.",
+                        action: "Present 2-3 realistic choices to increase agency.",
+                        icon: "Choose"
+                    }
+                ]
+            },
+            2: { // Moderate - Agitated
+                name: "Moderate Agitation Protocol", 
+                steps: [
+                    {
+                        title: "Ensure Safety",
+                        content: "Assess environment. Position near exit, remove hazards, consider backup if needed.",
+                        action: "Scan room for safety and position appropriately.",
+                        icon: "Safe"
+                    },
+                    {
+                        title: "Lower Your Voice",
+                        content: "Speak softly and slowly. Your calm tone helps regulate their nervous system through co-regulation.",
+                        action: "Consciously lower voice volume and slow speech.",
+                        icon: "Quiet"
+                    },
+                    {
+                        title: "Reflect Feelings",
+                        content: "Mirror observations: 'I see you're upset' or 'You sound frustrated with this situation.'",
+                        action: "Use reflective listening to show understanding.",
+                        icon: "Mirror"
+                    },
+                    {
+                        title: "Breathe Together",
+                        content: "Model slow breathing. Say 'Let's take a moment to breathe' and breathe visibly.",
+                        action: "Demonstrate breathing and invite them to join.",
+                        icon: "Breathe",
+                        hasBreathingExercise: true
+                    },
+                    {
+                        title: "Problem-Solve Together",
+                        content: "Once regulated, collaborate on solutions. Ask 'What would help you feel more comfortable?'",
+                        action: "Work together to identify practical solutions.",
+                        icon: "Solve"
+                    }
+                ]
+            },
+            3: { // Severe - Hostile
+                name: "Severe Crisis Protocol",
+                steps: [
+                    {
+                        title: "Safety First",
+                        content: "Priority is everyone's safety. Stay calm, assess danger, be ready to call security or leave.",
+                        action: "Evaluate threat level while remaining calm.",
+                        icon: "Warning"
+                    },
+                    {
+                        title: "Don't Take It Personally", 
+                        content: "Their behavior is about pain, not you. This is survival mode trying to protect them.",
+                        action: "Remind yourself: 'This is not about me. They're in pain.'",
+                        icon: "Think"
+                    },
+                    {
+                        title: "Use Minimal Words",
+                        content: "Fight/flight can't process complex info. Use short phrases: 'I want to help' or 'You're safe.'",
+                        action: "Speak in short, simple sentences with pauses.",
+                        icon: "Brief"
+                    },
+                    {
+                        title: "Give Space & Time",
+                        content: "Don't crowd physically or emotionally. Allow silence. Your calm presence is what's needed.",
+                        action: "Step back physically and give room to regulate.",
+                        icon: "Space"
+                    },
+                    {
+                        title: "Ground in Present",
+                        content: "Help reconnect with body: 'Feel your feet on floor' or 'Notice three things you can see.'",
+                        action: "Guide through simple grounding techniques.",
+                        icon: "Ground"
+                    },
+                    {
+                        title: "Follow-up & Support",
+                        content: "After crisis, acknowledge their strength. Discuss preventing future crises.",
+                        action: "Validate resilience and plan future support.",
+                        icon: "Support"
+                    }
+                ]
+            }
+        };
+
+        let currentLevel = 3;
+        let currentStepIndex = 0;
+        let silentMode = false;
+        let breathingTimer = null;
+
+        function startApp() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('active');
+            loadStep();
+            preventAccidentalExit();
+        }
+
+        function showWelcome() {
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('appContainer').classList.remove('active');
+            allowExit();
+        }
+
+        function preventAccidentalExit() {
+            window.addEventListener('beforeunload', handleBeforeUnload);
+        }
+
+        function allowExit() {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        }
+
+        function handleBeforeUnload(e) {
+            if (currentStepIndex > 0) {
+                e.preventDefault();
+                e.returnValue = 'Exit during crisis protocol?';
+            }
+        }
+
+        function setLevel(level) {
+            document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-level="${level}"]`).classList.add('active');
+            currentLevel = level;
+            currentStepIndex = 0;
+            loadStep();
+        }
+
+        function loadStep() {
+            const protocol = protocols[currentLevel];
+            const step = protocol.steps[currentStepIndex];
+            const totalSteps = protocol.steps.length;
+            
+            document.getElementById('currentStepNum').textContent = currentStepIndex + 1;
+            document.getElementById('totalSteps').textContent = totalSteps;
+            
+            const progress = ((currentStepIndex + 1) / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            let stepHtml = `
+                <div class="step-number">${currentStepIndex + 1}</div>
+                <div class="step-title">${step.title}</div>
+                <div class="step-content">${step.content}</div>
+                <div class="step-action">
+                    <span class="action-icon">${step.icon}</span>
+                    <strong>Action:</strong> ${step.action}
+                </div>
+            `;
+            
+            if (step.hasBreathingExercise) {
+                stepHtml += `
+                    <div class="breathing-exercise">
+                        <div class="breathing-circle" id="breathingCircle">BREATHE</div>
+                        <div class="breathing-instructions" id="breathingInstructions">
+                            Tap to start guided breathing
+                        </div>
+                        <button class="control-btn btn-next" onclick="startBreathingExercise()" id="breathingBtn" style="margin-top: 10px;">
+                            Start Breathing
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // Add emergency contacts for severe cases
+            if (currentLevel === 3 && currentStepIndex === 0) {
+                stepHtml += `
+                    <div class="emergency-contacts">
+                        <div class="contacts-title">
+                            Emergency Contacts
+                        </div>
+                        <div class="contact-item">
+                            <span>Hospital Security</span>
+                            <button class="call-btn" onclick="callEmergency('security')">Call</button>
+                        </div>
+                        <div class="contact-item">
+                            <span>Crisis Counselor</span>
+                            <button class="call-btn" onclick="callEmergency('counselor')">Call</button>
+                        </div>
+                        <div class="contact-item">
+                            <span>Supervisor</span>
+                            <button class="call-btn" onclick="callEmergency('supervisor')">Call</button>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.getElementById('currentStep').innerHTML = stepHtml;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentStepIndex === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentStepIndex === totalSteps - 1) {
+                nextBtn.textContent = 'Complete';
+                nextBtn.className = 'control-btn btn-complete';
+            } else {
+                nextBtn.textContent = 'Next →';
+                nextBtn.className = 'control-btn btn-next';
+            }
+        }
+
+        function nextStep() {
+            const protocol = protocols[currentLevel];
+            if (currentStepIndex < protocol.steps.length - 1) {
+                currentStepIndex++;
+                loadStep();
+                playSound('step-complete');
+            } else {
+                showCompletion();
+            }
+        }
+
+        function previousStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                loadStep();
+            }
+        }
+
+        function showCompletion() {
+            const protocol = protocols[currentLevel];
+            document.getElementById('currentStep').innerHTML = `
+                <div class="success-message">
+                    <div class="success-icon">Complete</div>
+                    <h3>Protocol Complete</h3>
+                    <p>You've completed the ${protocol.name}. Patient should be more regulated.</p>
+                    <p><strong>Remember:</strong> Your calm presence was the most important tool.</p>
+                    <button class="control-btn btn-complete" onclick="resetProtocol()" style="margin-top: 15px; width: 100%;">
+                        New Assessment
+                    </button>
+                </div>
+            `;
+            playSound('protocol-complete');
+        }
+
+        function resetProtocol() {
+            currentStepIndex = 0;
+            loadStep();
+        }
+
+        function startBreathingExercise() {
+            const circle = document.getElementById('breathingCircle');
+            const instructions = document.getElementById('breathingInstructions');
+            const btn = document.getElementById('breathingBtn');
+            
+            if (breathingTimer) {
+                clearInterval(breathingTimer);
+                breathingTimer = null;
+                btn.textContent = 'Start Breathing';
+                circle.classList.remove('inhale', 'exhale');
+                instructions.textContent = 'Breathing stopped';
+                return;
+            }
+            
+            btn.textContent = 'Stop Exercise';
+            let cycle = 0;
+            
+            function breatheCycle() {
+                if (cycle % 2 === 0) {
+                    circle.classList.remove('exhale');
+                    circle.classList.add('inhale');
+                    instructions.textContent = 'Breathe in... (4 seconds)';
+                } else {
+                    circle.classList.remove('inhale');
+                    circle.classList.add('exhale');
+                    instructions.textContent = 'Breathe out... (4 seconds)';
+                }
+                cycle++;
+                
+                if (cycle >= 10) {
+                    clearInterval(breathingTimer);
+                    breathingTimer = null;
+                    btn.textContent = 'Start Breathing';
+                    instructions.textContent = 'Complete! Notice how you feel.';
+                    circle.classList.remove('inhale', 'exhale');
+                }
+            }
+            
+            breatheCycle();
+            breathingTimer = setInterval(breatheCycle, 4000);
+        }
+
+        function toggleSilentMode() {
+            silentMode = !silentMode;
+            const btn = document.getElementById('silentToggle');
+            if (silentMode) {
+                btn.textContent = 'Silent';
+                btn.classList.add('silent-mode-active');
+            } else {
+                btn.textContent = 'Audio';
+                btn.classList.remove('silent-mode-active');
+            }
+        }
+
+        function callEmergency(type) {
+            const numbers = {
+                security: 'ext. 911',
+                counselor: 'ext. 2244', 
+                supervisor: 'ext. 1100'
+            };
+            
+            if (confirm(`Call ${type} at ${numbers[type]}?`)) {
+                // In real app, this would dial
+                alert(`Calling ${type}...`);
+            }
+        }
+
+        function playSound(type) {
+            if (!silentMode) {
+                // In real app, would play audio
+                console.log(`Playing ${type} sound`);
+            }
+        }
+
+        // Offline detection
+        function updateOnlineStatus() {
+            const indicator = document.getElementById('offlineIndicator');
+            if (navigator.onLine) {
+                indicator.textContent = 'Online';
+                indicator.classList.remove('offline');
+            } else {
+                indicator.textContent = 'Offline';
+                indicator.classList.add('offline');
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('appContainer').classList.contains('active')) {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        if (!document.getElementById('prevBtn').disabled) previousStep();
+                        break;
+                    case 'ArrowRight':
+                        nextStep();
+                        break;
+                    case 'Escape':
+                        if (currentStepIndex === 0) showWelcome();
+                        break;
+                    case '1':
+                        setLevel(1);
+                        break;
+                    case '2':
+                        setLevel(2);
+                        break;
+                    case '3':
+                        setLevel(3);
+                        break;
+                }
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateOnlineStatus();
+        });
+    </script>
+</body>
+</html>
+        const protocols = {
+            1: { // Mild - Anxious
+                name: "Mild Anxiety Protocol",
+                steps: [
+                    {
+                        title: "Center Yourself",
+                        content: "Before addressing anxiety, regulate your own nervous system. Take three deep breaths.",
+                        action: "Take 30 seconds to breathe and ground your presence.",
+                        icon: "Center"
+                    },
+                    {
+                        title: "Acknowledge & Validate",
+                        content: "Recognize anxiety without minimizing. Use: 'I can see you're worried' or 'Your concerns make sense.'",
+                        action: "Validate their emotional experience before medical needs.",
+                        icon: "Listen"
+                    },
+                    {
+                        title: "Provide Information",
+                        content: "Anxiety stems from unknown. Explain procedures, expectations, and answer questions clearly.",
+                        action: "Give step-by-step information about next steps.",
+                        icon: "Inform"
+                    },
+                    {
+                        title: "Offer Choices",
+                        content: "Restore control with options: position preferences, timing, or support person presence.",
+                        action: "Present 2-3 realistic choices to increase agency.",
+                        icon: "Choose"
+                    }
+                ]
+            },
+            2: { // Moderate - Agitated
+                name: "Moderate Agitation Protocol", 
+                steps: [
+                    {
+                        title: "Ensure Safety",
+                        content: "Assess environment. Position near exit, remove hazards, consider backup if needed.",
+                        action: "Scan room for safety and position appropriately.",
+                        icon: "Safe"
+                    },
+                    {
+                        title: "Lower Your Voice",
+                        content: "Speak softly and slowly. Your calm tone helps regulate their nervous system through co-regulation.",
+                        action: "Consciously lower voice volume and slow speech.",
+                        icon: "Quiet"
+                    },
+                    {
+                        title: "Reflect Feelings",
+                        content: "Mirror observations: 'I see you're upset' or 'You sound frustrated with this situation.'",
+                        action: "Use reflective listening to show understanding.",
+                        icon: "Mirror"
+                    },
+                    {
+                        title: "Breathe Together",
+                        content: "Model slow breathing. Say 'Let's take a moment to breathe' and breathe visibly.",
+                        action: "Demonstrate breathing and invite them to join.",
+                        icon: "Breathe",
+                        hasBreathingExercise: true
+                    },
+                    {
+                        title: "Problem-Solve Together",
+                        content: "Once regulated, collaborate on solutions. Ask 'What would help you feel more comfortable?'",
+                        action: "Work together to identify practical solutions.",
+                        icon: "Solve"
+                    }
+                ]
+            },
+            3: { // Severe - Hostile
+                name: "Severe Crisis Protocol",
+                steps: [
+                    {
+                        title: "Safety First",
+                        content: "Priority is everyone's safety. Stay calm, assess danger, be ready to call security or leave.",
+                        action: "Evaluate threat level while remaining calm.",
+                        icon: "Warning"
+                    },
+                    {
+                        title: "Don't Take It Personally", 
+                        content: "Their behavior is about pain, not you. This is survival mode trying to protect them.",
+                        action: "Remind yourself: 'This is not about me. They're in pain.'",
+                        icon: "Think"
+                    },
+                    {
+                        title: "Use Minimal Words",
+                        content: "Fight/flight can't process complex info. Use short phrases: 'I want to help' or 'You're safe.'",
+                        action: "Speak in short, simple sentences with pauses.",
+                        icon: "Brief"
+                    },
+                    {
+                        title: "Give Space & Time",
+                        content: "Don't crowd physically or emotionally. Allow silence. Your calm presence is what's needed.",
+                        action: "Step back physically and give room to regulate.",
+                        icon: "Space"
+                    },
+                    {
+                        title: "Ground in Present",
+                        content: "Help reconnect with body: 'Feel your feet on floor' or 'Notice three things you can see.'",
+                        action: "Guide through simple grounding techniques.",
+                        icon: "Ground"
+                    },
+                    {
+                        title: "Follow-up & Support",
+                        content: "After crisis, acknowledge their strength. Discuss preventing future crises.",
+                        action: "Validate resilience and plan future support.",
+                        icon: "Support"
+                    }
+                ]
+            }
+        };
+
+        let currentLevel = 3;
+        let currentStepIndex = 0;
+        let silentMode = false;
+        let breathingTimer = null;
+
+        function startApp() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('active');
+            loadStep();
+            preventAccidentalExit();
+        }
+
+        function showWelcome() {
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('appContainer').classList.remove('active');
+            allowExit();
+        }
+
+        function preventAccidentalExit() {
+            window.addEventListener('beforeunload', handleBeforeUnload);
+        }
+
+        function allowExit() {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        }
+
+        function handleBeforeUnload(e) {
+            if (currentStepIndex > 0) {
+                e.preventDefault();
+                e.returnValue = 'Exit during crisis protocol?';
+            }
+        }
+
+        function setLevel(level) {
+            document.querySelectorAll('.level-btn').forEach(btn => btn.classList.remove('active'));
+            document.querySelector(`[data-level="${level}"]`).classList.add('active');
+            currentLevel = level;
+            currentStepIndex = 0;
+            loadStep();
+        }
+
+        function loadStep() {
+            const protocol = protocols[currentLevel];
+            const step = protocol.steps[currentStepIndex];
+            const totalSteps = protocol.steps.length;
+            
+            document.getElementById('currentStepNum').textContent = currentStepIndex + 1;
+            document.getElementById('totalSteps').textContent = totalSteps;
+            
+            const progress = ((currentStepIndex + 1) / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            let stepHtml = `
+                <div class="step-number">${currentStepIndex + 1}</div>
+                <div class="step-title">${step.title}</div>
+                <div class="step-content">${step.content}</div>
+                <div class="step-action">
+                    <span class="action-icon">${step.icon}</span>
+                    <strong>Action:</strong> ${step.action}
+                </div>
+            `;
+            
+            if (step.hasBreathingExercise) {
+                stepHtml += `
+                    <div class="breathing-exercise">
+                        <div class="breathing-circle" id="breathingCircle">BREATHE</div>
+                        <div class="breathing-instructions" id="breathingInstructions">
+                            Tap to start guided breathing
+                        </div>
+                        <button class="control-btn btn-next" onclick="startBreathingExercise()" id="breathingBtn" style="margin-top: 10px;">
+                            Start Breathing
+                        </button>
+                    </div>
+                `;
+            }
+            
+            // Add emergency contacts for severe cases
+            if (currentLevel === 3 && currentStepIndex === 0) {
+                stepHtml += `
+                    <div class="emergency-contacts">
+                        <div class="contacts-title">
+                            Emergency Contacts
+                        </div>
+                        <div class="contact-item">
+                            <span>Hospital Security</span>
+                            <button class="call-btn" onclick="callEmergency('security')">Call</button>
+                        </div>
+                        <div class="contact-item">
+                            <span>Crisis Counselor</span>
+                            <button class="call-btn" onclick="callEmergency('counselor')">Call</button>
+                        </div>
+                        <div class="contact-item">
+                            <span>Supervisor</span>
+                            <button class="call-btn" onclick="callEmergency('supervisor')">Call</button>
+                        </div>
+                    </div>
+                `;
+            
+            document.getElementById('currentStep').innerHTML = stepHtml;
+            
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentStepIndex === 0;
+            const nextBtn = document.getElementById('nextBtn');
+            if (currentStepIndex === totalSteps - 1) {
+                nextBtn.textContent = 'Complete';
+                nextBtn.className = 'control-btn btn-complete';
+            } else {
+                nextBtn.textContent = 'Next →';
+                nextBtn.className = 'control-btn btn-next';
+            }
+        }
+
+        function nextStep() {
+            const protocol = protocols[currentLevel];
+            if (currentStepIndex < protocol.steps.length - 1) {
+                currentStepIndex++;
+                loadStep();
+                playSound('step-complete');
+            } else {
+                showCompletion();
+            }
+        }
+
+        function previousStep() {
+            if (currentStepIndex > 0) {
+                currentStepIndex--;
+                loadStep();
+            }
+        }
+
+        function showCompletion() {
+            const protocol = protocols[currentLevel];
+            document.getElementById('currentStep').innerHTML = `
+                <div class="success-message">
+                    <div class="success-icon">Complete</div>
+                    <h3>Protocol Complete</h3>
+                    <p>You've completed the ${protocol.name}. Patient should be more regulated.</p>
+                    <p><strong>Remember:</strong> Your calm presence was the most important tool.</p>
+                    <button class="control-btn btn-complete" onclick="resetProtocol()" style="margin-top: 15px; width: 100%;">
+                        New Assessment
+                    </button>
+                </div>
+            `;
+            playSound('protocol-complete');
+        }
+
+        function resetProtocol() {
+            currentStepIndex = 0;
+            loadStep();
+        }
+
+        function startBreathingExercise() {
+            const circle = document.getElementById('breathingCircle');
+            const instructions = document.getElementById('breathingInstructions');
+            const btn = document.getElementById('breathingBtn');
+            
+            if (breathingTimer) {
+                clearInterval(breathingTimer);
+                breathingTimer = null;
+                btn.textContent = 'Start Breathing';
+                circle.classList.remove('inhale', 'exhale');
+                instructions.textContent = 'Breathing stopped';
+                return;
+            }
+            
+            btn.textContent = 'Stop Exercise';
+            let cycle = 0;
+            
+            function breatheCycle() {
+                if (cycle % 2 === 0) {
+                    circle.classList.remove('exhale');
+                    circle.classList.add('inhale');
+                    instructions.textContent = 'Breathe in... (4 seconds)';
+                } else {
+                    circle.classList.remove('inhale');
+                    circle.classList.add('exhale');
+                    instructions.textContent = 'Breathe out... (4 seconds)';
+                }
+                cycle++;
+                
+                if (cycle >= 10) {
+                    clearInterval(breathingTimer);
+                    breathingTimer = null;
+                    btn.textContent = 'Start Breathing';
+                    instructions.textContent = 'Complete! Notice how you feel.';
+                    circle.classList.remove('inhale', 'exhale');
+                }
+            }
+            
+            breatheCycle();
+            breathingTimer = setInterval(breatheCycle, 4000);
+        }
+
+        function toggleSilentMode() {
+            silentMode = !silentMode;
+            const btn = document.getElementById('silentToggle');
+            if (silentMode) {
+                btn.textContent = 'Silent';
+                btn.classList.add('silent-mode-active');
+            } else {
+                btn.textContent = 'Audio';
+                btn.classList.remove('silent-mode-active');
+            }
+        }
+
+        function callEmergency(type) {
+            const numbers = {
+                security: 'ext. 911',
+                counselor: 'ext. 2244', 
+                supervisor: 'ext. 1100'
+            };
+            
+            if (confirm(`Call ${type} at ${numbers[type]}?`)) {
+                // In real app, this would dial
+                alert(`Calling ${type}...`);
+            }
+        }
+
+        function playSound(type) {
+            if (!silentMode) {
+                // In real app, would play audio
+                console.log(`Playing ${type} sound`);
+            }
+        }
+
+        // Offline detection
+        function updateOnlineStatus() {
+            const indicator = document.getElementById('offlineIndicator');
+            if (navigator.onLine) {
+                indicator.textContent = 'Online';
+                indicator.classList.remove('offline');
+            } else {
+                indicator.textContent = 'Offline';
+                indicator.classList.add('offline');
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (document.getElementById('appContainer').classList.contains('active')) {
+                switch(e.key) {
+                    case 'ArrowLeft':
+                        if (!document.getElementById('prevBtn').disabled) previousStep();
+                        break;
+                    case 'ArrowRight':
+                        nextStep();
+                        break;
+                    case 'Escape':
+                        if (currentStepIndex === 0) showWelcome();
+                        break;
+                    case '1':
+                        setLevel(1);
+                        break;
+                    case '2':
+                        setLevel(2);
+                        break;
+                    case '3':
+                        setLevel(3);
+                        break;
+                }
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateOnlineStatus();
+        });
+    </script>
+</body>
+</html>

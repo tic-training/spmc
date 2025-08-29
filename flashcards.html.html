@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trauma Recognition Flashcards - CARING COMPASSION</title>
+    <meta name="description" content="Learn to recognize trauma responses in patients - Part of CARING COMPASSION Training">
+    <link rel="manifest" href="data:application/json,{&quot;name&quot;:&quot;Trauma Flashcards&quot;,&quot;short_name&quot;:&quot;Flashcards&quot;,&quot;start_url&quot;:&quot;.&quot;,&quot;display&quot;:&quot;standalone&quot;,&quot;theme_color&quot;:&quot;#667eea&quot;}">
+    <meta name="theme-color" content="#667eea">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 10px;
+            touch-action: manipulation;
+        }
+
+        .welcome-screen {
+            background: white;
+            border-radius: 20px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            margin: 20px auto;
+        }
+
+        .welcome-screen.hidden {
+            display: none;
+        }
+
+        .training-logo {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+
+        .training-title {
+            font-size: 1.4rem;
+            color: #2c3e50;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .training-subtitle {
+            color: #6c757d;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        .tool-name {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 15px;
+            border-radius: 15px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .quick-instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        .instruction-title {
+            font-weight: bold;
+            color: #495057;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .instruction-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .instruction-list li {
+            padding: 8px 0;
+            color: #495057;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .start-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-bottom: 15px;
+        }
+
+        .start-btn:active {
+            transform: scale(0.98);
+        }
+
+        .bookmark-hint {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            color: #856404;
+        }
+
+        .bookmark-icon {
+            font-size: 1.2rem;
+            margin-right: 8px;
+        }
+
+        /* Main app styles (simplified for mobile) */
+        .app-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+            display: none;
+        }
+
+        .app-container.active {
+            display: block;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .back-btn {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px;
+            border-radius: 50%;
+            font-size: 1.2rem;
+            cursor: pointer;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header h1 {
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .flashcard-container {
+            padding: 20px;
+            position: relative;
+            height: 350px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .flashcard {
+            width: 100%;
+            height: 280px;
+            position: relative;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .flashcard.flipped .card-inner {
+            transform: rotateY(180deg);
+        }
+
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .card-front {
+            background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 100%);
+            color: #333;
+        }
+
+        .card-back {
+            background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);
+            color: #333;
+            transform: rotateY(180deg);
+        }
+
+        .behavior-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+
+        .behavior-description {
+            font-size: 0.9rem;
+            line-height: 1.4;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .trauma-interpretation {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            text-align: center;
+        }
+
+        .trauma-title {
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-bottom: 12px;
+            color: #2c3e50;
+        }
+
+        .controls {
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #f8f9fa;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s ease;
+            font-size: 0.9rem;
+            min-width: 80px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            flex: 1;
+        }
+
+        .btn-secondary {
+            background: #e9ecef;
+            color: #495057;
+            flex: 1;
+        }
+
+        .btn:active {
+            transform: scale(0.98);
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s ease;
+        }
+
+        .card-counter {
+            font-size: 0.9rem;
+            color: #6c757d;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .flip-hint {
+            position: absolute;
+            bottom: 10px;
+            right: 15px;
+            font-size: 0.8rem;
+            color: rgba(0, 0, 0, 0.5);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .category-tag {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .audio-btn {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            transition: all 0.2s ease;
+        }
+
+        .audio-btn:active {
+            transform: scale(0.95);
+        }
+
+        .install-prompt {
+            background: #e3f2fd;
+            border: 1px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .install-btn {
+            background: #2196f3;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-weight: 600;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+
+        @media (max-width: 480px) {
+            .welcome-screen, .app-container {
+                margin: 10px;
+                border-radius: 15px;
+            }
+            
+            .flashcard-container {
+                height: 320px;
+                padding: 15px;
+            }
+            
+            .flashcard {
+                height: 260px;
+            }
+        }
+
+        .offline-indicator {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #28a745;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            z-index: 1000;
+        }
+
+        .offline-indicator.offline {
+            background: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Welcome Screen -->
+    <div class="welcome-screen" id="welcomeScreen">
+        <div class="training-logo"></div>
+        <div class="training-title">CARING COMPASSION</div>
+        <div class="training-subtitle">Trauma-Informed Care Training<br>Southern Philippines Medical Center</div>
+        
+        <div class="tool-name">
+            Trauma Recognition Flashcards
+        </div>
+        
+        <div class="quick-instructions">
+            <div class="instruction-title">
+                How to Use:
+            </div>
+            <ul class="instruction-list">
+                <li>Tap cards to flip and reveal trauma insights</li>
+                <li>Swipe or use arrows to navigate</li>
+                <li>Tap speaker for audio pronunciation</li>
+                <li>Works offline once loaded</li>
+            </ul>
+        </div>
+        
+        <button class="start-btn" onclick="startApp()">
+            Start Learning
+        </button>
+        
+        <div class="bookmark-hint">
+            <strong>Tip:</strong> Add to your home screen for quick access! Tap your browser menu and select "Add to Home Screen"
+        </div>
+        
+        <div class="install-prompt" id="installPrompt" style="display: none;">
+            <div>📱 Install this tool for offline use</div>
+            <button class="install-btn" id="installBtn">Install App</button>
+        </div>
+    </div>
+
+    <!-- Main App -->
+    <div class="app-container" id="appContainer">
+        <div class="header">
+            <button class="back-btn" onclick="showWelcome()">←</button>
+            <h1>Trauma Recognition</h1>
+            <p>Patient Behavior Flashcards</p>
+        </div>
+        
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressBar"></div>
+        </div>
+
+        <div class="flashcard-container">
+            <div class="flashcard" id="flashcard" onclick="flipCard()">
+                <div class="card-inner">
+                    <div class="card-front">
+                        <button class="audio-btn" onclick="playAudio(event)" title="Listen">Audio</button>
+                        <div class="category-tag" id="categoryTag">Behavioral</div>
+                        <div class="behavior-title" id="behaviorTitle">Patient Behavior</div>
+                        <div class="behavior-description" id="behaviorDescription">Loading...</div>
+                        <div class="flip-hint">Tap to reveal</div>
+                    </div>
+                    <div class="card-back">
+                        <div class="trauma-title">Trauma Interpretation</div>
+                        <div class="trauma-interpretation" id="traumaInterpretation">Loading...</div>
+                        <div class="flip-hint">Tap to return</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-secondary" onclick="previousCard()">← Prev</button>
+            <div class="card-counter">
+                <span id="currentCard">1</span> / <span id="totalCards">15</span>
+            </div>
+            <button class="btn btn-primary" onclick="nextCard()">Next →</button>
+        </div>
+    </div>
+
+    <!-- Offline Indicator -->
+    <div class="offline-indicator" id="offlineIndicator">
+        📶 Online
+    </div>
+
+    <script>
+        // Simplified flashcards for mobile
+        const flashcards = [
+            {
+                category: "Behavioral",
+                behavior: "Patient becomes agitated during routine questions",
+                description: "Raises voice, appears frustrated, may pace or fidget during intake",
+                interpretation: "Hyperarousal response - The nervous system is in fight/flight mode. This protective response may indicate previous medical trauma or feeling unheard by providers."
+            },
+            {
+                category: "Physical", 
+                behavior: "Patient appears 'checked out' during exam",
+                description: "Vacant stare, minimal responses, seems disconnected from body during touch",
+                interpretation: "Freeze/dissociation response - The nervous system shuts down to protect from overwhelming sensations. Common in trauma survivors during vulnerable procedures."
+            },
+            {
+                category: "Emotional",
+                behavior: "Patient becomes tearful when removing clothing",
+                description: "Sudden tears, repeated apologies, shows shame or embarrassment",
+                interpretation: "Vulnerability trauma response - Removing clothing triggers memories of powerlessness. The tears signal nervous system activation and need for extra safety."
+            },
+            {
+                category: "Avoidance",
+                behavior: "Patient repeatedly reschedules appointments", 
+                description: "Last-minute cancellations, vague excuses, anxiety when scheduling",
+                interpretation: "Medical trauma avoidance - Healthcare settings have become trauma triggers. The nervous system perceives medical care as dangerous despite rational need."
+            },
+            {
+                category: "Hypervigilance",
+                behavior: "Patient constantly scans room and startles easily",
+                description: "Eyes darting around, jumps at hospital sounds, asks many questions",
+                interpretation: "Hypervigilant trauma response - The amygdala is hyperactive, constantly scanning for threats. This survival mechanism now creates exhaustion in safe environments."
+            },
+            {
+                category: "Control",
+                behavior: "Patient insists on keeping door open",
+                description: "Needs to see exits, wants detailed explanations, brings multiple support people",
+                interpretation: "Control-seeking for safety - Having choices helps regulate a dysregulated nervous system. Previous powerlessness in medical settings drives need for control."
+            },
+            {
+                category: "Compliance",
+                behavior: "Patient agrees to everything without questions",
+                description: "Says 'yes' to all recommendations, doesn't express preferences, overly accommodating",
+                interpretation: "Fawn response - Survival strategy using compliance to avoid conflict. May indicate abuse history where questioning authority was dangerous."
+            },
+            {
+                category: "Physical",
+                behavior: "Patient holds breath during procedures",
+                description: "Visible chest tension, may hold breath during exams, braces against touch",
+                interpretation: "Somatic trauma response - The body holds trauma through restricted breathing and muscle tension. Shallow breathing maintains hypervigilance."
+            },
+            {
+                category: "Emotional", 
+                behavior: "Patient irritated by small delays or changes",
+                description: "Disproportionate anger about waiting, strong reactions to schedule changes",
+                interpretation: "Nervous system dysregulation - When already activated by medical environment, small stressors feel overwhelming. Reflects nervous system capacity, not personality."
+            },
+            {
+                category: "Social",
+                behavior: "Patient brings multiple support people",
+                description: "Reluctant to be alone with provider, needs others present, seeks constant reassurance",
+                interpretation: "Co-regulation seeking - Traumatized nervous systems often need trusted others to feel safe. This is healthy strategy, not dependence."
+            },
+            {
+                category: "Cognitive",
+                behavior: "Patient has difficulty following instructions",
+                description: "Asks for repetition, seems confused by routine procedures, forgets details",
+                interpretation: "Trauma impact on executive function - Activated nervous system takes the prefrontal cortex offline. This is neurobiological, not lack of intelligence."
+            },
+            {
+                category: "Behavioral",
+                behavior: "Patient apologizes excessively for normal needs",
+                description: "Says sorry for bodily functions, apologizes for taking time, minimizes pain",
+                interpretation: "Shame-based trauma response - Internalized messages about being 'too much.' Often stems from childhood where needs met with rejection."
+            },
+            {
+                category: "Physical",
+                behavior: "Patient reacts strongly to unexpected touch",
+                description: "Jumps or pulls away when touched without warning, strong startle responses",
+                interpretation: "Hyperactive startle response - Trauma rewires nervous system to be hyperresponsive. Body prepares to protect before mind assesses actual threat."
+            },
+            {
+                category: "Emotional",
+                behavior: "Patient alternates between emotional extremes",
+                description: "Calm then tearful or angry, emotions shift quickly and unpredictably",
+                interpretation: "Nervous system dysregulation - When overwhelmed, system rapidly shifts between states. These aren't mood swings but neurobiological responses to feeling unsafe."
+            },
+            {
+                category: "Somatic",
+                behavior: "Patient reports multiple unexplained symptoms",
+                description: "Chronic pain, headaches, digestive issues, fatigue without clear medical cause",
+                interpretation: "Somatized trauma - The body keeps the score of traumatic experiences. Emotional trauma often manifests as very real physical symptoms."
+            }
+        ];
+
+        let currentCardIndex = 0;
+        let isFlipped = false;
+        let deferredPrompt;
+
+        // PWA Installation
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPrompt = e;
+            document.getElementById('installPrompt').style.display = 'block';
+        });
+
+        document.getElementById('installBtn').addEventListener('click', async () => {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                const { outcome } = await deferredPrompt.userChoice;
+                deferredPrompt = null;
+                document.getElementById('installPrompt').style.display = 'none';
+            }
+        });
+
+        // Offline detection
+        function updateOnlineStatus() {
+            const indicator = document.getElementById('offlineIndicator');
+            if (navigator.onLine) {
+                indicator.textContent = 'Online';
+                indicator.classList.remove('offline');
+            } else {
+                indicator.textContent = 'Offline';
+                indicator.classList.add('offline');
+            }
+        }
+
+        window.addEventListener('online', updateOnlineStatus);
+        window.addEventListener('offline', updateOnlineStatus);
+
+        function startApp() {
+            document.getElementById('welcomeScreen').classList.add('hidden');
+            document.getElementById('appContainer').classList.add('active');
+            loadCard(0);
+        }
+
+        function showWelcome() {
+            document.getElementById('welcomeScreen').classList.remove('hidden');
+            document.getElementById('appContainer').classList.remove('active');
+        }
+
+        function loadCard(index) {
+            const card = flashcards[index];
+            document.getElementById('categoryTag').textContent = card.category;
+            document.getElementById('behaviorTitle').textContent = 'Patient Behavior';
+            document.getElementById('behaviorDescription').textContent = card.description;
+            document.getElementById('traumaInterpretation').textContent = card.interpretation;
+            
+            const progress = ((index + 1) / flashcards.length) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+            
+            document.getElementById('currentCard').textContent = index + 1;
+            document.getElementById('totalCards').textContent = flashcards.length;
+            
+            if (isFlipped) {
+                flipCard();
+            }
+        }
+
+        function flipCard() {
+            const flashcard = document.getElementById('flashcard');
+            flashcard.classList.toggle('flipped');
+            isFlipped = !isFlipped;
+        }
+
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % flashcards.length;
+            loadCard(currentCardIndex);
+        }
+
+        function previousCard() {
+            currentCardIndex = (currentCardIndex - 1 + flashcards.length) % flashcards.length;
+            loadCard(currentCardIndex);
+        }
+
+        function playAudio(event) {
+            event.stopPropagation();
+            
+            if ('speechSynthesis' in window) {
+                const card = flashcards[currentCardIndex];
+                const utterance = new SpeechSynthesisUtterance(card.description);
+                utterance.rate = 0.8;
+                utterance.pitch = 1;
+                speechSynthesis.speak(utterance);
+            }
+        }
+
+        // Touch gestures
+        let startX = null;
+        let startY = null;
+        
+        document.getElementById('flashcard').addEventListener('touchstart', function(event) {
+            startX = event.touches[0].clientX;
+            startY = event.touches[0].clientY;
+        });
+
+        document.getElementById('flashcard').addEventListener('touchend', function(event) {
+            if (startX === null || startY === null) return;
+            
+            const endX = event.changedTouches[0].clientX;
+            const endY = event.changedTouches[0].clientY;
+            const diffX = startX - endX;
+            const diffY = startY - endY;
+            
+            // Only trigger swipe if horizontal movement is greater than vertical
+            if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > 50) {
+                if (diffX > 0) {
+                    nextCard();
+                } else {
+                    previousCard();
+                }
+            }
+            
+            startX = null;
+            startY = null;
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(event) {
+            if (document.getElementById('appContainer').classList.contains('active')) {
+                switch(event.key) {
+                    case 'ArrowLeft':
+                        previousCard();
+                        break;
+                    case 'ArrowRight':
+                        nextCard();
+                        break;
+                    case ' ':
+                    case 'Enter':
+                        event.preventDefault();
+                        flipCard();
+                        break;
+                    case 'Escape':
+                        showWelcome();
+                        break;
+                }
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            updateOnlineStatus();
+        });
+
+        // Cache for offline use
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('data:text/javascript,console.log("SW registered")');
+        }
+    </script>
+</body>
+</html>
